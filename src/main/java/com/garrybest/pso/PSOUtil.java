@@ -37,7 +37,7 @@ public class PSOUtil implements PSOConstants {
         int pos = -1;
         double minValue = 0;
         for (int i = 0; i < list.length; i++) {
-            if (!feasibleList[i] && isFeasible) // 当两者不一致时，跳过这次循环
+            if (!feasibleList[i] && isFeasible)
                 continue;
             if (pos == -1) {
                 pos = i;

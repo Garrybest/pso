@@ -122,7 +122,7 @@ public class BinaryPSO extends AbstractPSO implements PSOConstants {
 
             Set<Particle> pool = new HashSet<>();
             int hybridPoolSize = (int) (swarmSize * HYBRID_PROBABILITY);
-            if ((hybridPoolSize & 1) == 1) // 如果是奇数
+            if ((hybridPoolSize & 1) == 1)
                 hybridPoolSize++;
             while (pool.size() < hybridPoolSize) {
                 Particle p = swarm.get((int) (Math.random() * swarmSize));
