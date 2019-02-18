@@ -1,11 +1,10 @@
 package com.garrybest.pso;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.logging.Logger;
 
 /**
  * Hybrid PSO algorithm with gaussian mutation.
@@ -16,7 +15,7 @@ import java.util.Set;
  */
 public class HybridPSO extends AbstractPSO implements PSOConstants {
 
-    private static Logger logger = LogManager.getLogger(HybridPSO.class);
+    private static Logger logger = Logger.getLogger(HybridPSO.class.getName());
 
     private OptModel optModel;
     private double[] fitness;
@@ -161,7 +160,7 @@ public class HybridPSO extends AbstractPSO implements PSOConstants {
                 for (int j = 0; j < n; j++) {
                     double previousLoc = p.getLocation().getLoc()[j];
                     double tempLoc = previousLoc + newVel[j];
-                    newLoc[j] = PSOUtil.restrictByBoundary(tempLoc, maxLoc[j], minLoc[j], previousLoc);
+                    newLoc[j] = PSOUtil.restrictByBoundary(tempLoc, maxLoc[j], minLoc[j]);
                 }
                 p.setLocation(new Location(newLoc));
             }
@@ -169,7 +168,7 @@ public class HybridPSO extends AbstractPSO implements PSOConstants {
             // Step 3：hybridization
             Set<Particle> pool = new HashSet<>();
             int hybridPoolSize = (int) (swarmSize * HYBRID_PROBABILITY);
-                if ((hybridPoolSize & 1) == 1) // odd number
+            if ((hybridPoolSize & 1) == 1) // odd number
                 hybridPoolSize++;
             while (pool.size() < hybridPoolSize) {
                 Particle p = swarm.get((int) (Math.random() * swarmSize));
@@ -229,8 +228,7 @@ public class HybridPSO extends AbstractPSO implements PSOConstants {
                 for (int i = 0; i < mutationLoc.length; i++) {
                     double previousLoc = p.getLocation().getLoc()[i];
                     double tempLoc = previousLoc + mutationCoeff[i];
-                    mutationLoc[i] = PSOUtil.restrictByBoundary(tempLoc, maxLoc[i], minLoc[i], previousLoc);
-                    mutationLoc[i] = tempLoc;
+                    mutationLoc[i] = PSOUtil.restrictByBoundary(tempLoc, maxLoc[i], minLoc[i]);
                 }
                 p.setLocation(new Location(mutationLoc));
             }
@@ -263,14 +261,14 @@ public class HybridPSO extends AbstractPSO implements PSOConstants {
 
             if (isGBestfeasible)
                 tol = gBest - optModel.getTolFitness();
-            logger.debug("ITERATION " + iterNum + ": Value: " + gBest + "  " + isGBestfeasible);
+            logger.fine("ITERATION " + iterNum + ": Value: " + gBest + "  " + isGBestfeasible);
             iterNum++;
         }
 
         if (isGBestfeasible) {
             logger.info("Solution found at iteration " + iterNum + ", best fitness value: " + gBest);
         } else {
-            logger.warn("Solution not found");
+            logger.warning("Solution not found");
         }
     }
 
